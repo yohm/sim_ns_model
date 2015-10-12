@@ -9,15 +9,36 @@ class NagelSchreckenberg
     @num_cars = (l*rho).to_i
     @p = p
 
-    @state = Array.new(l) {|i| i < @num_cars ? 1 : 0 }
+    @state = Array.new(@l) {|i| i < @num_cars ? 0 : nil }
     @state.shuffle!
   end
 
   def update
+    updated_v = @state.map {|v| v ? v+1 : nil }
+    current = @state + @state # to handle PBC
+    updated_v = updated_v.each_with_index.map do |v,idx|
+      if v
+        forward = current[idx+1..idx+v].index {|x| x}
+        forward || v
+      end
+    end
+    updated_v = updated_v.map do |v|
+      if v
+        (v > 0 and rand < @p) ? v-1 : v
+      end
+    end
+
+    # move
+    @state = Array.new(@l,nil)
+    updated_v.each_with_index do |v,idx|
+      if v
+        @state[(idx+v) % @l] = v
+      end
+    end
   end
 
   def avg_v
-    @state.inject(:+).to_f / @state.size
+    @state.compact.inject(:+).to_f / @state.size
   end
 
   def flow
@@ -45,7 +66,7 @@ seed = ARGV[6].to_i
 srand(seed)
 
 ns = NagelSchreckenberg.new(l, v, rho, p)
-dt = t_init / 100
+dt = t_init / 100 + 1
 io = File.open("initial_time_series.dat", 'w')
 t_init.times do |t|
   $stderr.puts "#{t} / #{t_init}" if t % dt == 0
@@ -54,12 +75,13 @@ t_init.times do |t|
 end
 io.close
 
-dt = t_init / 100
+dt = t_measure / 100 + 1
 v_sum = 0.0
 flow_sum = 0.0
 snapshots = []
 t_measure.times do |t|
-  $stderr.puts "#{t} / #{t_init}" if t % dt == 0
+  $stderr.puts "#{t} / #{t_measure}" if t % dt == 0
+  p ns.snapshot
   ns.update
   v_sum += ns.avg_v
   flow_sum += ns.flow
