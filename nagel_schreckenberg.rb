@@ -50,6 +50,28 @@ class NagelSchreckenberg
   end
 end
 
+def dump_snapshots_to_png(pngfile, snapshots, vmax, s = 5)
+  size_x = snapshots[0].size * s
+  size_y = snapshots.size * s
+
+  png = ChunkyPNG::Image.new(size_x, size_y, ChunkyPNG::Color.from_hex('#FFFFFF'))
+  v_color = lambda {|v|
+    r = ((vmax-v).to_f/vmax)*255
+    g = ((v).to_f/vmax)*255
+    ChunkyPNG::Color.rgba(r.to_i, g.to_i, 0, 128)
+  }
+
+  snapshots.each_with_index do |row,row_idx|
+    row.each_with_index do |cell,col_idx|
+      if cell
+        color = v_color.call(cell)
+        png.rect( col_idx*s, row_idx*s, (col_idx+1)*s, (row_idx+1)*s, color, color)
+      end
+    end
+  end
+  png.save(pngfile)
+end
+
 unless ARGV.size == 7
   $stderr.puts "usage: ruby #{__FILE__} <lane length> <max v> <car density> <deceleration probability> <thermalization step> <measurement step> <seed>"
   raise "invalid argument"
@@ -81,14 +103,13 @@ flow_sum = 0.0
 snapshots = []
 t_measure.times do |t|
   $stderr.puts "#{t} / #{t_measure}" if t % dt == 0
-  p ns.snapshot
   ns.update
   v_sum += ns.avg_v
   flow_sum += ns.flow
-  snapshots << ns.snapshot if t_measure - t <= 100 # save last 100 snapshots
+  snapshots << ns.snapshot if t_measure - t <= 300 # save last 300 snapshots
 end
 
-# dump_snapshots_to_png(snapshots, 'traffic.png')
+dump_snapshots_to_png('traffic.png', snapshots, v)
 
 File.open('_output.json', 'w') do |io|
   v_avg = v_sum / t_measure
