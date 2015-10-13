@@ -14,7 +14,13 @@ class NagelSchreckenberg
   end
 
   def update
-    updated_v = @state.map {|v| v ? v+1 : nil }
+    updated_v = @state.map do |v|
+      if v
+        v < @v ? v+1 : v
+      else
+        nil
+      end
+    end
     current = @state + @state # to handle PBC
     updated_v = updated_v.each_with_index.map do |v,idx|
       if v
