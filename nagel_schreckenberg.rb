@@ -44,7 +44,8 @@ class NagelSchreckenberg
   end
 
   def avg_v
-    @state.compact.inject(:+).to_f / @state.size
+    compacted = @state.compact
+    compacted.inject(:+).to_f / compacted.size
   end
 
   def flow
