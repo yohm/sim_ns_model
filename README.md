@@ -49,6 +49,9 @@ The json file has the average velocity and the amount of flow calculated during 
 
 ## Snapshot
 
+The horizontal and vertical axis indicate space and time, respectively. Colored squares are cars, moving to the right direction.
+The colors of the cars denote the velocity of the cars. Green cars moves fast while red cars moves slowly so the red cars are in a traffic jam.
+
 ![snapshot](https://raw.githubusercontent.com/yohm/nagel_schreckenberg_model/master/sample.png)
 
 ## License
