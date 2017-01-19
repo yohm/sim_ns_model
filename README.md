@@ -54,6 +54,14 @@ The colors of the cars denote the velocity of the cars. Green cars moves fast wh
 
 ![snapshot](https://raw.githubusercontent.com/yohm/nagel_schreckenberg_model/master/sample.png)
 
+## Using with OACIS
+
+To register this simulation code to OACIS, run the following code.
+
+```
+<path of oacis>/bin/oacis_ruby register_to_oacis.rb
+```
+
 ## License
 
 The MIT License (MIT)
