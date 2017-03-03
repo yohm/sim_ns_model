@@ -2,7 +2,7 @@ repo_dir = File.expand_path(File.dirname(__FILE__))
 
 localhost = Host.find_by_name("localhost")
 
-sim_name = "Nagel_Schreckenberg"
+sim_name = "NS_model"
 raise "simulator #{sim_name} already exists" if Simulator.where(name: sim_name).exists?
 
 sim = Simulator.create!(
@@ -23,7 +23,7 @@ sim = Simulator.create!(
 
 - Simulation code of Nagel-Schreckenberg model written in Ruby.
     - [https://en.wikipedia.org/wiki/Nagel%E2%80%93Schreckenberg_model](https://en.wikipedia.org/wiki/Nagel%E2%80%93Schreckenberg_model)
-- source code is available on [github](https://github.com/yohm/nagel_schreckenberg_model)
+- source code is available on [github](https://github.com/yohm/sim_ns_model)
 EOS
   )
 

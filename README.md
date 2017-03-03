@@ -56,10 +56,10 @@ The colors of the cars denote the velocity of the cars. Green cars moves fast wh
 
 ## Using with OACIS
 
-To register this simulation code to OACIS, run the following code.
+To register this simulation code to OACIS, run the following code. It will run `bundle` and registers the simulator on OACIS.
 
-```
-<path of oacis>/bin/oacis_ruby register_to_oacis.rb
+```sh
+./install_on_oacis.sh
 ```
 
 ## License
