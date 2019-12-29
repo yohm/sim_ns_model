@@ -56,10 +56,16 @@ The colors of the cars denote the velocity of the cars. Green cars moves fast wh
 
 ## Using with OACIS
 
-To register this simulation code to OACIS, run the following code. It will run `bundle` and registers the simulator on OACIS.
+To register this simulation code to OACIS, run the following code. It will clone the repository, run `bundle`, and registers the simulator on OACIS.
 
 ```sh
-./install_on_oacis.sh
+curl -fsSL https://raw.githubusercontent.com/yohm/sim_ns_model/master/setup.sh | bash
+```
+
+If you're using [oacis_docker](https://github.com/crest-cassia/oacis_docker), run the following command.
+
+```sh
+docker exec -it -u oacis my_oacis bash -lc "curl -fsSL https://raw.githubusercontent.com/yohm/sim_ns_model/master/setup.sh | bash"
 ```
 
 ## License
